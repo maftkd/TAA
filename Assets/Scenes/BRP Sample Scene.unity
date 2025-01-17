@@ -630,6 +630,7 @@ Transform:
   - {fileID: 833750392}
   - {fileID: 1976851217}
   - {fileID: 1443309371}
+  - {fileID: 984563809}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 19.146, y: 46.979, z: 0}
@@ -680,6 +681,7 @@ MonoBehaviour:
   - {fileID: 833750390}
   - {fileID: 1976851215}
   - {fileID: 1443309369}
+  - {fileID: 984563807}
 --- !u!1001 &400208067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1171,6 +1173,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cd68658772698d4b8a443f0de1c54bc, type: 3}
+--- !u!1 &984563807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 984563809}
+  - component: {fileID: 984563808}
+  m_Layer: 0
+  m_Name: TAA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &984563808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984563807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbccb420482c043a5b8e14ee6353da66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shader: {fileID: 4800000, guid: 74d55d7b06ec6477da25ad5a5a215897, type: 3}
+--- !u!4 &984563809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984563807}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 354915518}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &987020515
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1855,8 +1902,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalComposite: {fileID: 4800000, guid: 0cf6e18f75e9a451ba48a12bdd5b0302, type: 3}
-  xScale: 2
-  yScale: 2
 --- !u!4 &1443309371
 Transform:
   m_ObjectHideFlags: 0
