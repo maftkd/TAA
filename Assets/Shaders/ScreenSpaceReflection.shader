@@ -128,7 +128,7 @@ Shader "Hidden/ScreenSpaceReflection"
                 float visibility = hit0 *
                     (1 - max(0, dot(-unitPositionFrom, reflectedRay))) *
                         (1 - saturate(depthDifference / _Thickness)) *
-                            (1 - saturate(length(positionTo.xyz - positionFrom.xyz) / _MaxDistance)) *
+                            (1 - pow(saturate(length(positionTo.xyz - positionFrom.xyz) / _MaxDistance),2)) *
                                 smoothstep(0.55, 0.45, distFromCenter);
                                     //step(dot(tex2D(_GNormal, curCoords).xyz, reflectedRay), 0);
 
