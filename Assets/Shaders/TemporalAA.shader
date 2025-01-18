@@ -39,10 +39,13 @@ Shader "Hidden/TemporalAA"
 
             sampler2D _MainTex;
             sampler2D _HistoryBuffer;
+            sampler2D _GVelocity;
             float _ModulationFactor;
 
             fixed4 frag (v2f i) : SV_Target
             {
+                float2 vel = tex2D(_GVelocity, i.uv).rg;
+                return float4(vel, 0, 1);
                 fixed4 col = tex2D(_MainTex, i.uv);
                 fixed4 history = tex2D(_HistoryBuffer, i.uv);
                 return lerp(col, history, _ModulationFactor);
