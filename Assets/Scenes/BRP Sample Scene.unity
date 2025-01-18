@@ -1203,6 +1203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 74d55d7b06ec6477da25ad5a5a215897, type: 3}
+  modulationFactor: 0.9
 --- !u!4 &984563809
 Transform:
   m_ObjectHideFlags: 0

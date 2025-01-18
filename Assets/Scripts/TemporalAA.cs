@@ -7,6 +7,12 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
     private Material _mat;
 
     private int _frameCount;
+
+    private RenderTexture _historyBuffer;
+
+    [Range(0, 1)]
+    public float modulationFactor;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +26,8 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
         }
         
         Shader.SetGlobalVectorArray("_JitterVectors", jitterVectors.ToArray());
+        
+        Shader.SetGlobalInt("_FrameCount", _frameCount);
     }
 
     List<float> GenerateHaltonSequence(int basePrime, int count)
@@ -58,13 +66,29 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
         {
             _mat = new Material(shader);
         }
-        Shader.SetGlobalInt("_FrameCount", _frameCount);
-        Graphics.Blit(source, destination, _mat, 0);
+        if(_historyBuffer == null || _historyBuffer.width != destination.width || _historyBuffer.height != destination.height)
+        {
+            _historyBuffer = new RenderTexture(destination.width, destination.height, 0, destination.format);
+            _historyBuffer.filterMode = FilterMode.Bilinear;
+            _historyBuffer.wrapMode = TextureWrapMode.Clamp;
+            _mat.SetTexture("_HistoryBuffer", _historyBuffer);
+        }
+        _mat.SetFloat("_ModulationFactor", modulationFactor);
+        
+        RenderTexture tmp = RenderTexture.GetTemporary(_historyBuffer.width, _historyBuffer.height, 0, destination.format);
+        
+        Graphics.Blit(source, tmp, _mat, 0);
+        Graphics.Blit(tmp, _historyBuffer);
+        Graphics.Blit(_historyBuffer, destination);
+        //Graphics.Blit(source, destination);
 
         _frameCount++;
         if (_frameCount > 15)
         {
             _frameCount = 0;
         }
+        Shader.SetGlobalInt("_FrameCount", _frameCount);
+        
+        RenderTexture.ReleaseTemporary(tmp);
     }
 }

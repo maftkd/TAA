@@ -38,13 +38,14 @@ Shader "Hidden/TemporalAA"
             }
 
             sampler2D _MainTex;
+            sampler2D _HistoryBuffer;
+            float _ModulationFactor;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                // just invert the colors
-                col.rgb = 1 - col.rgb;
-                return col;
+                fixed4 history = tex2D(_HistoryBuffer, i.uv);
+                return lerp(col, history, _ModulationFactor);
             }
             ENDCG
         }
