@@ -9,9 +9,19 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
     void Start()
     {
         //use halton sequence to generate an array of jitter vectors
-        int basePrime = 2;
+        List<float> haltonSequenceX = GenerateHaltonSequence(2, 16);
+        List<float> haltonSequenceY = GenerateHaltonSequence(3, 16);
+        List<Vector2> jitterVectors = new List<Vector2>();
+        for (int i = 0; i < 16; i++)
+        {
+            jitterVectors.Add(new Vector2(haltonSequenceX[i], haltonSequenceY[i]));
+        }
+    }
+
+    List<float> GenerateHaltonSequence(int basePrime, int count)
+    {
         List<float> haltonSequence = new List<float>();
-        for (int i = 1; i <= 16; i++)
+        for (int i = 1; i <= count; i++)
         {
             int num = i;
             int iter = 1;
@@ -28,10 +38,8 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
             
             haltonSequence.Add(val);
         }
-        foreach(float f in haltonSequence)
-        {
-            Debug.Log(f);
-        }
+
+        return haltonSequence;
     }
 
     // Update is called once per frame
