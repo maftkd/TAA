@@ -5,17 +5,21 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
 {
     public Shader shader;
     private Material _mat;
+
+    private int _frameCount;
     // Start is called before the first frame update
     void Start()
     {
         //use halton sequence to generate an array of jitter vectors
         List<float> haltonSequenceX = GenerateHaltonSequence(2, 16);
         List<float> haltonSequenceY = GenerateHaltonSequence(3, 16);
-        List<Vector2> jitterVectors = new List<Vector2>();
+        List<Vector4> jitterVectors = new List<Vector4>();
         for (int i = 0; i < 16; i++)
         {
             jitterVectors.Add(new Vector2(haltonSequenceX[i], haltonSequenceY[i]));
         }
+        
+        Shader.SetGlobalVectorArray("_JitterVectors", jitterVectors.ToArray());
     }
 
     List<float> GenerateHaltonSequence(int basePrime, int count)
@@ -54,6 +58,13 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
         {
             _mat = new Material(shader);
         }
+        Shader.SetGlobalInt("_FrameCount", _frameCount);
         Graphics.Blit(source, destination, _mat, 0);
+
+        _frameCount++;
+        if (_frameCount > 15)
+        {
+            _frameCount = 0;
+        }
     }
 }

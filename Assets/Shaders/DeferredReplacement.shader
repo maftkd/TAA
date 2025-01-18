@@ -47,12 +47,16 @@ Shader "Unlit/DeferredReplacement"
             float4 _MainTex_ST;
             float4 _Color;
             float4x4 _ViewMatrix;
-
+            float4 _JitterVectors[16];
+            int _FrameCount;
             
             v2f vert (appdata v)
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
+                float2 jitter = _JitterVectors[_FrameCount];
+                jitter = ((jitter - float2(0.5,0.5)) / _ScreenParams.xy) * 2;
+                o.pos.xy += jitter * o.pos.w;
                 o.uv = v.uv;
                 o.normal = normalize(mul((float3x3)UNITY_MATRIX_MV, v.normal));
                 o.viewPos = UnityObjectToViewPos(v.vertex);
