@@ -45,9 +45,30 @@ Shader "Hidden/TemporalAA"
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 vel = tex2D(_GVelocity, i.uv).rg;
-                return float4(vel, 0, 1);
+                if(vel.x == -99)
+                {
+                    //return 0;
+                }
+                float2 prevUv = i.uv - vel;
+                //return float4(prevUv, 0, 1);
+                //return float4(vel, 0, 1);
                 fixed4 col = tex2D(_MainTex, i.uv);
-                fixed4 history = tex2D(_HistoryBuffer, i.uv);
+                fixed4 history = tex2D(_HistoryBuffer, prevUv);
+
+                //clamp history
+                float2 texelSize = 1.0 / _ScreenParams.xy;
+                float4 neighbor1 = tex2D(_HistoryBuffer, i.uv + float2(texelSize.x, 0));
+                float4 neighbor2 = tex2D(_HistoryBuffer, i.uv + float2(-texelSize.x, 0));
+                float4 neighbor3 = tex2D(_HistoryBuffer, i.uv + float2(0, texelSize.y));
+                float4 neighbor4 = tex2D(_HistoryBuffer, i.uv + float2(0, -texelSize.y));
+
+                float4 boxMin = min(min(min(min(neighbor1, neighbor2), neighbor3), neighbor4), col);
+                float4 boxMax = max(max(max(max(neighbor1, neighbor2), neighbor3), neighbor4), col);
+
+                history = clamp(history, boxMin, boxMax);
+
+                
+                
                 return lerp(col, history, _ModulationFactor);
             }
             ENDCG
