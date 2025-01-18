@@ -76,7 +76,8 @@ public class TemporalAA : MonoBehaviour, IPostProcessLayer
         _mat.SetFloat("_ModulationFactor", modulationFactor);
         
         RenderTexture tmp = RenderTexture.GetTemporary(_historyBuffer.width, _historyBuffer.height, 0, destination.format);
-        
+
+        source.filterMode = FilterMode.Point;
         Graphics.Blit(source, tmp, _mat, 0);
         Graphics.Blit(tmp, _historyBuffer);
         Graphics.Blit(_historyBuffer, destination);
